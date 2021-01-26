@@ -112,6 +112,24 @@ CsManager::serveInfo(const Name& topPrefix, const Interest& interest,
   info.setNHits(m_fwCounters.nCsHits);
   info.setNMisses(m_fwCounters.nCsMisses);
 
+  info.setPolicyName(std::string(m_cs.getPolicy()->getName()));
+
+  auto average_counter = 0;
+  for (const nfd::cs::Entry& entry : m_cs) {
+    auto size = entry.getData().getContent().size();
+    average_counter += size;
+    if (size > info.getMaxSize()) { info.setMaxSize(size); }
+    if (size < info.getMinSize()) { info.setMinSize(size); }
+  }
+  float average = (float) average_counter / info.getNEntries();
+  info.setAverageSize(average);
+
+  float std_dev_counter = 0;
+  for (const nfd::cs::Entry& entry : m_cs) {
+    std_dev_counter += pow(entry.getData().getContent().value_size() - average, 2);
+  }
+  info.setStdDevSize(sqrt(std_dev_counter/(info.getNEntries()-1)));
+
   context.append(info.wireEncode());
   context.end();
 }

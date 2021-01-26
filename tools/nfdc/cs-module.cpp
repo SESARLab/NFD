@@ -27,6 +27,7 @@
 #include "format-helpers.hpp"
 
 #include <ndn-cxx/util/indented-stream.hpp>
+#include <ndn-cxx/encoding/tlv.hpp>
 
 namespace nfd {
 namespace tools {
@@ -160,6 +161,11 @@ CsModule::formatItemXml(std::ostream& os, const CsInfo& item)
   os << "<nEntries>" << item.getNEntries() << "</nEntries>";
   os << "<nHits>" << item.getNHits() << "</nHits>";
   os << "<nMisses>" << item.getNMisses() << "</nMisses>";
+  os << "<policyName>" << item.getPolicyName() << "</policyName>";
+  os << "<minSize>" << item.getMinSize() << "</minSize>";
+  os << "<maxSize>" << item.getMaxSize() << "</maxSize>";
+  os << "<averageSize>" << item.getAverageSize() << "</averageSize>";
+  os << "<stdDevSize>" << item.getStdDevSize() << "</stdDevSize>";
   os << "</cs>";
 }
 
@@ -174,13 +180,19 @@ CsModule::formatStatusText(std::ostream& os) const
 void
 CsModule::formatItemText(std::ostream& os, const CsInfo& item)
 {
-  text::ItemAttributes ia(true, 8);
+
+  text::ItemAttributes ia(true, 11);
   os << ia("capacity") << item.getCapacity()
      << ia("admit") << text::OnOff{item.getEnableAdmit()}
      << ia("serve") << text::OnOff{item.getEnableServe()}
      << ia("nEntries") << item.getNEntries()
      << ia("nHits") << item.getNHits()
      << ia("nMisses") << item.getNMisses()
+     << ia("policyName") << item.getPolicyName()
+     << ia("minSize") << item.getMinSize()
+     << ia("maxSize") << item.getMaxSize()
+     << ia("averageSize") << item.getAverageSize()
+     << ia("stdDevSize") << item.getStdDevSize()
      << ia.end();
 }
 
