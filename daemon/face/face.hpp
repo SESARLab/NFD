@@ -30,6 +30,7 @@
 #include "face-counters.hpp"
 #include "link-service.hpp"
 #include "transport.hpp"
+#include "buffered-counter.hpp"
 
 namespace nfd {
 namespace face {
@@ -173,6 +174,18 @@ public: // properties
   const FaceCounters&
   getCounters() const;
 
+  const ndn::nfd::BufferedCounter<u_int64_t>&
+  getInterestPacketSizeCounter() const;
+
+  const ndn::nfd::BufferedCounter<u_int64_t>&
+  getDataPacketSizeCounter() const;
+
+  const ndn::nfd::BufferedCounter<u_int64_t>&
+  getInterestPacketComponentsCounter() const;
+
+  const ndn::nfd::BufferedCounter<u_int64_t>&
+  getDataPacketComponentsCounter() const;
+
   /**
    * \brief Get channel on which face was created (unicast) or the associated channel (multicast)
    */
@@ -197,6 +210,10 @@ private:
   unique_ptr<Transport> m_transport;
   FaceCounters m_counters;
   weak_ptr<Channel> m_channel;
+  ndn::nfd::BufferedCounter<u_int64_t> m_interest_packet_size_counter;
+  ndn::nfd::BufferedCounter<u_int64_t> m_data_packet_size_counter;
+  ndn::nfd::BufferedCounter<u_int64_t> m_interest_packet_components_counter;
+  ndn::nfd::BufferedCounter<u_int64_t> m_data_packet_components_counter;
 };
 
 inline LinkService*
@@ -220,12 +237,17 @@ Face::close()
 inline void
 Face::sendInterest(const Interest& interest)
 {
+  Name name = interest.getName();
+  m_interest_packet_size_counter.push(name.toUri().size());
+  m_interest_packet_components_counter.push(name.size());
   m_service->sendInterest(interest);
 }
 
 inline void
 Face::sendData(const Data& data)
 {
+  m_data_packet_size_counter.push(data.getContent().size());
+  m_data_packet_components_counter.push(data.getName().size());
   m_service->sendData(data);
 }
 
@@ -305,6 +327,30 @@ inline const FaceCounters&
 Face::getCounters() const
 {
   return m_counters;
+}
+
+inline const ndn::nfd::BufferedCounter<u_int64_t>&
+Face::getInterestPacketSizeCounter() const
+{
+  return m_interest_packet_size_counter;
+}
+
+inline const ndn::nfd::BufferedCounter<u_int64_t>&
+Face::getDataPacketSizeCounter() const
+{
+  return m_data_packet_size_counter;
+}
+
+inline const ndn::nfd::BufferedCounter<u_int64_t>&
+Face::getInterestPacketComponentsCounter() const
+{
+  return m_interest_packet_components_counter;
+}
+
+inline const ndn::nfd::BufferedCounter<u_int64_t>&
+Face::getDataPacketComponentsCounter() const
+{
+  return m_data_packet_components_counter;
 }
 
 std::ostream&

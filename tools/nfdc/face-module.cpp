@@ -504,7 +504,27 @@ FaceModule::formatItemText(std::ostream& os, const FaceStatus& item, bool wantMu
      << item.getNOutInterests() << "i "
      << item.getNOutData() << "d "
      << item.getNOutNacks() << "n "
-     << item.getNOutBytes() << "B}}";
+     << item.getNOutBytes() << "B} "
+     << "interest_size={"
+     << item.get_interest_packet_size_min() << "min "
+     << item.get_interest_packet_size_max() << "max "
+     << item.get_interest_packet_size_avg() << "avg "
+     << item.get_interest_packet_size_std_dev() << "std_dev} "
+     << "data_size={"
+     << item.get_data_packet_size_min() << "min "
+     << item.get_data_packet_size_max() << "max "
+     << item.get_data_packet_size_avg() << "avg "
+     << item.get_data_packet_size_std_dev() << "std_dev} "
+     << "interest_components={"
+     << item.get_interest_packet_components_min() << "min "
+     << item.get_interest_packet_components_max() << "max "
+     << item.get_interest_packet_components_avg() << "avg "
+     << item.get_interest_packet_components_std_dev() << "std_dev} "
+     << "data_components={"
+     << item.get_data_packet_components_min() << "min "
+     << item.get_data_packet_components_max() << "max "
+     << item.get_data_packet_components_avg() << "avg "
+     << item.get_data_packet_components_std_dev() << "std_dev}}";
 
   os << ia("flags") << '{';
   text::Separator flagSep("", " ");

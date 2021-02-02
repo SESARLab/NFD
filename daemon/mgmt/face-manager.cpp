@@ -380,6 +380,10 @@ makeFaceStatus(const Face& face, const time::steady_clock::TimePoint& now)
   copyMtu(face, status);
 
   const auto& counters = face.getCounters();
+  auto interest_packet_size = face.getInterestPacketSizeCounter();
+  auto data_packet_size = face.getDataPacketSizeCounter();
+  auto interest_packet_components = face.getDataPacketComponentsCounter();
+  auto data_packet_components = face.getDataPacketComponentsCounter();
   status.setNInInterests(counters.nInInterests)
         .setNOutInterests(counters.nOutInterests)
         .setNInData(counters.nInData)
@@ -387,7 +391,23 @@ makeFaceStatus(const Face& face, const time::steady_clock::TimePoint& now)
         .setNInNacks(counters.nInNacks)
         .setNOutNacks(counters.nOutNacks)
         .setNInBytes(counters.nInBytes)
-        .setNOutBytes(counters.nOutBytes);
+        .setNOutBytes(counters.nOutBytes)
+        .set_interest_packet_size_min(interest_packet_size.min())
+        .set_interest_packet_size_max(interest_packet_size.max())
+        .set_interest_packet_size_avg(interest_packet_size.average())
+        .set_interest_packet_size_std_dev(interest_packet_size.std_dev())
+        .set_data_packet_size_min(data_packet_size.min())
+        .set_data_packet_size_max(data_packet_size.max())
+        .set_data_packet_size_avg(data_packet_size.average())
+        .set_data_packet_size_std_dev(data_packet_size.std_dev())
+        .set_interest_packet_components_min(interest_packet_components.min())
+        .set_interest_packet_components_max(interest_packet_components.max())
+        .set_interest_packet_components_avg(interest_packet_components.average())
+        .set_interest_packet_components_std_dev(interest_packet_components.std_dev())
+        .set_data_packet_components_min(data_packet_components.min())
+        .set_data_packet_components_max(data_packet_components.max())
+        .set_data_packet_components_avg(data_packet_components.average())
+        .set_data_packet_components_std_dev(data_packet_components.std_dev());
 
   return status;
 }
