@@ -452,28 +452,28 @@ FaceModule::formatItemXml(std::ostream& os, const FaceStatus& item) const
 
   os << "<interestPacketSize>";
   os << "<min>" << item.get_interest_packet_size_min() << "</min>";
-  os << "<max>" << item.get_interest_packet_size_max() << "</min>";
+  os << "<max>" << item.get_interest_packet_size_max() << "</max>";
   os << "<avg>" << item.get_interest_packet_size_avg() << "</avg>";
   os << "<stdDev>" << item.get_interest_packet_size_std_dev() << "</stdDev>";
   os << "</interestPacketSize>";
 
   os << "<dataPacketSize>";
   os << "<min>" << item.get_data_packet_size_min() << "</min>";
-  os << "<max>" << item.get_data_packet_size_max() << "</min>";
+  os << "<max>" << item.get_data_packet_size_max() << "</max>";
   os << "<avg>" << item.get_data_packet_size_avg() << "</avg>";
   os << "<stdDev>" << item.get_data_packet_size_std_dev() << "</stdDev>";
   os << "</dataPacketSize>";
 
   os << "<interestPacketComponents>";
   os << "<min>" << item.get_interest_packet_components_min() << "</min>";
-  os << "<max>" << item.get_interest_packet_components_max() << "</min>";
+  os << "<max>" << item.get_interest_packet_components_max() << "</max>";
   os << "<avg>" << item.get_interest_packet_components_avg() << "</avg>";
   os << "<stdDev>" << item.get_interest_packet_components_std_dev() << "</stdDev>";
   os << "</interestPacketComponents>";
 
   os << "<dataPacketComponents>";
   os << "<min>" << item.get_data_packet_components_min() << "</min>";
-  os << "<max>" << item.get_data_packet_components_max() << "</min>";
+  os << "<max>" << item.get_data_packet_components_max() << "</max>";
   os << "<avg>" << item.get_data_packet_components_avg() << "</avg>";
   os << "<stdDev>" << item.get_data_packet_components_std_dev() << "</stdDev>";
   os << "</dataPacketComponents>";
