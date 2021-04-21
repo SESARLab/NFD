@@ -166,6 +166,8 @@ CsModule::formatItemXml(std::ostream& os, const CsInfo& item)
   os << "<maxSize>" << item.getMaxSize() << "</maxSize>";
   os << "<averageSize>" << item.getAverageSize() << "</averageSize>";
   os << "<stdDevSize>" << item.getStdDevSize() << "</stdDevSize>";
+  os << "<validSignaturePackets>" << item.getValidSignaturePackets() << "</validSignaturePackets>";
+  os << "<invalidSignaturePackets>" << item.getInvalidSignaturePackets() << "</invalidSignaturePackets>";
   os << "</cs>";
 }
 
@@ -193,6 +195,8 @@ CsModule::formatItemText(std::ostream& os, const CsInfo& item)
      << ia("maxSize") << item.getMaxSize()
      << ia("averageSize") << item.getAverageSize()
      << ia("stdDevSize") << item.getStdDevSize()
+     << ia("validSignaturePackets") << item.getValidSignaturePackets()
+     << ia("invalidSignaturePackets") << item.getInvalidSignaturePackets()
      << ia.end();
 }
 
