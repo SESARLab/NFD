@@ -114,15 +114,19 @@ CsManager::serveInfo(const Name& topPrefix, const Interest& interest,
 
   info.setPolicyName(std::string(m_cs.getPolicy()->getName()));
 
-  auto average_counter = 0;
+  uint64_t average_counter = 0, valid_signatures = 0, invalid_signatures = 0;
   for (const nfd::cs::Entry& entry : m_cs) {
     auto size = entry.getData().getContent().size();
+    bool valid_signature = bool(entry.getData().getSignatureInfo());
     average_counter += size;
     if (size > info.getMaxSize()) { info.setMaxSize(size); }
     if (size < info.getMinSize()) { info.setMinSize(size); }
+    if (valid_signature) { ++valid_signatures; } else { ++invalid_signatures; }
   }
   float average = (float) average_counter / info.getNEntries();
   info.setAverageSize(average);
+  info.setValidSignaturePackets(valid_signatures);
+  info.setInvalidSignaturePackets(invalid_signatures);
 
   float std_dev_counter = 0;
   for (const nfd::cs::Entry& entry : m_cs) {
